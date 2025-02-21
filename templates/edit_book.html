@@ -1,0 +1,303 @@
+{% extends "/partials/after_base.html" %}
+{% block content %}
+{% if type == "new": %}
+<div class="container book-review-container">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="border p-3 mb-5" style="display: flex; align-items: center; justify-content: center;">
+                <img id="bookCover" src="" alt="Book Cover" class="img-fluid form-label d-flex mb-3">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1 class="h1 text-center danger">Book Review</h1>
+
+            <form class="mt-3" id="addBookForm" action="{{url_for('new_book')}}" method="POST" enctype="multipart/form-data">
+                <div class="text-center col-md-12 align-items-center mb-4">
+                    <label for="formFile" class="form-label">Select book cover:</label>
+                    <input class="form-control col-md-6" type="file" id="formFile" name="book_cover" required>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Book Title:</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Author:</label>
+                        <input type="text" class="form-control" name="author" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Genre:</label>
+                        <input type="text" class="form-control" name="genre" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Pages:</label>
+                        <input type="number" class="form-control" name="pages" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label">Start Date:</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">End Date:</label>
+                        <input type="date" class="form-control" name="end_date" required>
+                    </div>
+                </div>
+                <div class="mb-3 text-center">
+                    <label class="form-label">Format:</label>
+                    <div class="d-flex justify-content-center">
+                        <input type="radio" name="format" value="Book" checked> Book &nbsp;
+                        <input type="radio" name="format" value="AudioBook"> Audiobook &nbsp;
+                        <input type="radio" name="format" value="E-book"> E-book
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="mb-3 col-md-6 text-center">
+                        <label class="form-label">Rating:</label>
+                        <select class="form-select" aria-label="rating" name="star_rating" required>
+                            <option selected>Rate from 1-5 ⭐</option>
+                            <option value="1">⭐</option>
+                            <option value="2">⭐⭐</option>
+                            <option value="3">⭐⭐⭐</option>
+                            <option value="4">⭐⭐⭐⭐</option>
+                            <option value="5">⭐⭐⭐⭐⭐</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-6 text-center">
+                        <label class="form-label text-center">Spice:</label>
+                        <select class="form-select" aria-label="spice" name="spice_rating" required>
+                            <option selected>Rate from 1-5 🌶️</option>
+                            <option value="1">🌶️</option>
+                            <option value="2">🌶️🌶️</option>
+                            <option value="3">🌶️🌶️🌶️</option>
+                            <option value="4">🌶️🌶️🌶️🌶️</option>
+                            <option value="5">🌶️🌶️🌶️🌶️🌶️</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Feeling:</label>
+                    <select class="form-select" aria-label="spice" name="feeling" required>
+                            <option selected>How you feel about the book ?</option>
+                            <option value="1">BEST BOOK I'VE EVER RED</option>
+                            <option value="2">READ BETTER ONES</option>
+                            <option value="3">MUST READ</option>
+                            <option value="4">WISH I HADN'T READ THIS</option>
+                            <option value="5">I DID NOT LIKE IT AT ALL</option>
+                            <option value="6">THIS BOOK MADE ME CRY️</option>
+                            <option value="7">I COULD NOT FINISH</option>
+                            <option value="8">SO BORING</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Summary:</label>
+                    <textarea class="form-control" name="summary" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Favorite Quote:</label>
+                    <textarea class="form-control" name="fav_quote" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Thoughts & Impressions:</label>
+                    <textarea class="form-control" name="thoughts"></textarea>
+                </div>
+                <div class="mb-5 text-center justify-content-center">
+                    <label class="form-label">Would recommend?&nbsp;</label>
+                    <a href="#" onclick="setValue(true)" class="btn btn-success btn-yes">Yes</a>
+                    <a href="#" onclick="setValue(false)" class=" btn btn-danger btn-no">No</a>
+                    <input type="hidden" id="recommend" name="recommend" value="" required>
+                </div>
+                <button type="submit" class="btn btn-danger col-12">Add Book</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container book-review-container">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="border p-3 mb-5" style="display: flex; align-items: center; justify-content: center;">
+                <img id="currBookCover" src="data:image/jpeg;base64,{{ cover }}" alt="Book Cover" class="img-fluid form-label d-flex mb-3">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1 class="h1 text-center danger">Book Changes</h1>
+
+            <form class="mt-3" id="editBookForm" action="{{url_for('edit_book', idx=book.id)}}" method="POST" enctype="multipart/form-data">
+                <div class="text-center col-md-12 align-items-center mb-4">
+                    <label for="formFile" class="form-label">Select book cover:</label>
+                    <input class="form-control col-md-6" type="file" id="editFormFile" name="book_cover">
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Book Title:</label>
+                        <input type="text" class="form-control" name="title" value="{{book.title}}" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Author:</label>
+                        <input type="text" class="form-control" name="author" value="{{book.author}}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Genre:</label>
+                        <input type="text" class="form-control" name="genre" value="{{book.genre}}" required>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label">Pages:</label>
+                        <input type="number" class="form-control" name="pages" value="{{book.pages}}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="form-label">Start Date:</label>
+                        <input type="date" class="form-control" name="start_date" value="{{start_date}}" required>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">End Date:</label>
+                        <input type="date" class="form-control" name="end_date" value="{{end_date}}" required>
+                    </div>
+                </div>
+                <div class="mb-3 text-center">
+                    <label class="form-label">Format:</label>
+                    <div class="d-flex justify-content-center">
+                        {% if book.format == "Book": %}
+                            <input type="radio" name="format" value="Book" checked> Book &nbsp;
+                            <input type="radio" name="format" value="AudioBook"> Audiobook &nbsp;
+                            <input type="radio" name="format" value="E-book"> E-book
+                        {% elif book.format == "AudioBook": %}
+                            <input type="radio" name="format" value="Book"> Book &nbsp;
+                            <input type="radio" name="format" value="AudioBook" checked> Audiobook &nbsp;
+                            <input type="radio" name="format" value="E-book"> E-book
+                        {% else: %}
+                            <input type="radio" name="format" value="Book"> Book &nbsp;
+                            <input type="radio" name="format" value="AudioBook"> Audiobook &nbsp;
+                            <input type="radio" name="format" value="E-book" checked> E-book
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="mb-3 col-md-6 text-center">
+                        <label class="form-label">Rating:</label>
+                        <select class="form-select" aria-label="rating" name="star_rating" required>
+                            <option>Rate from 1-5 ⭐</option>
+                            {% if book.stars == 1: %}
+                                <option value="1" selected>⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            {% elif book.stars == 2: %}
+                                <option value="1">⭐</option>
+                                <option value="2" selected>⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            {% elif book.stars == 3: %}
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3" selected>⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            {% elif book.stars == 4: %}
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4" selected>⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            {% else :%}
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5" selected>⭐⭐⭐⭐⭐</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-6 text-center">
+                        <label class="form-label text-center">Spice:</label>
+                        <select class="form-select" aria-label="spice" name="spice_rating" required>
+                            <option>Rate from 1-5 🌶️</option>
+                            {% if book.spice == 1: %}
+                                <option value="1" selected>🌶️</option>
+                                <option value="2">🌶️🌶️</option>
+                                <option value="3">🌶️🌶️🌶️</option>
+                                <option value="4">🌶️🌶️🌶️🌶️</option>
+                                <option value="5">🌶️🌶️🌶️🌶️🌶️</option>
+                            {% elif book.spice == 2: %}
+                                <option value="1">🌶️</option>
+                                <option value="2" selected>🌶️🌶️</option>
+                                <option value="3">🌶️🌶️🌶️</option>
+                                <option value="4">🌶️🌶️🌶️🌶️</option>
+                                <option value="5">🌶️🌶️🌶️🌶️🌶️</option>
+                            {% elif book.spice == 3: %}
+                                <option value="1">🌶️</option>
+                                <option value="2">🌶️🌶️</option>
+                                <option value="3" selected>🌶️🌶️🌶️</option>
+                                <option value="4">🌶️🌶️🌶️🌶️</option>
+                                <option value="5">🌶️🌶️🌶️🌶️🌶️</option>
+                            {% elif book.spice == 4: %}
+                                <option value="1">🌶️</option>
+                                <option value="2">🌶️🌶️</option>
+                                <option value="3">🌶️🌶️🌶️</option>
+                                <option value="4" selected>🌶️🌶️🌶️🌶️</option>
+                                <option value="5">🌶️🌶️🌶️🌶️🌶️</option>
+                            {% else :%}
+                                <option value="1">🌶️</option>
+                                <option value="2">🌶️🌶️</option>
+                                <option value="3">🌶️🌶️🌶️</option>
+                                <option value="4">🌶️🌶️🌶️🌶️</option>
+                                <option value="5" selected>🌶️🌶️🌶️🌶️🌶️</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Feeling:</label>
+                    <select class="form-select" aria-label="spice" name="feeling" required>
+                            <option selected>How you feel about the book ?</option>
+                            <option value="1">BEST BOOK I'VE EVER RED</option>
+                            <option value="2">READ BETTER ONES</option>
+                            <option value="3">MUST READ</option>
+                            <option value="4">WISH I HADN'T READ THIS</option>
+                            <option value="5">I DID NOT LIKE IT AT ALL</option>
+                            <option value="6">THIS BOOK MADE ME CRY️</option>
+                            <option value="7">I COULD NOT FINISH</option>
+                            <option value="8">SO BORING</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Summary:</label>
+                    <textarea class="form-control" name="summary" required>
+                        {{book.summary}}
+                    </textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Favorite Quote:</label>
+                    <textarea class="form-control" name="fav_quote" required>
+                        {{book.fav_quote}}
+                    </textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Thoughts & Impressions:</label>
+                    <textarea class="form-control" name="thoughts">
+                        {{book.thoughts_impressions}}
+                    </textarea>
+                </div>
+                <div class="mb-5 text-center justify-content-center">
+                    <label class="form-label">Would recommend?&nbsp;</label>
+                    <a href="#" onclick="setValue(true)" class="btn btn-success btn-yes">Yes</a>
+                    <a href="#" onclick="setValue(false)" class=" btn btn-danger btn-no">No</a>
+                    <input type="hidden" id="editRecommend" name="recommend" value="" required>
+                </div>
+                <button type="submit" class="btn btn-danger col-12">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script src="{{url_for('static', filename='scripts/cover_loader.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "/partials/after_base.html" %}
+{% block content %}
+<div class="container align-items-center justify-content-center">
+  <form action="{{url_for('settings')}}" method="POST" enctype="multipart/form-data" class="row col-md-12">
+    <div class="mb-5 col-md-5 text-center">
+        <label for="formFile" class="form-label row">Choose a profile picture:</label>
+        <img id="profilePreview" src="data:image/jpeg;base64,{{ profile_pic }}" alt="Profile Picture" class="mb-3 col-md-5 row" width="150">
+        <input class="form-control col-md-5 row" type="file" id="formFile" name="profile_pic">
+    </div>
+    <div class="col-md-7">
+      <div class="col-md-12 text-center">
+        <img class="mb-4" src="{{url_for('static', filename='assets/booklib.png')}}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Settings</h1>
+      </div>
+    <div class="mb-3">
+      <label for="firstName">First Name</label>
+      <input type="text" class="form-control" id="firstName" placeholder="Jone" name="first_name" value="{{user.first_name}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="lastName">Last Name</label>
+      <input type="text" class="form-control" id="lastName" placeholder="Doe" name="last_name" value="{{user.last_name}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" placeholder="JoneDoe8" name="username" value="{{user.username}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="floatingInput">Email address</label>
+      <input type="email" class="form-control" id="floatingInput" placeholder="JoneD@example.com" name="email" value="{{user.email}}" required>
+    </div>
+    <div class="mb-3">
+      <label for="floatingOldPassword">Old Password</label>
+      <input type="password" class="form-control" id="floatingOldPassword" placeholder="Old Password" name="old_password" required>
+    </div>
+    <div class="mb-3">
+      <label for="floatingPassword">New Password</label>
+      <input type="password" class="form-control" id="floatingPassword" placeholder="New Password" name="new_password">
+    </div>
+
+    <button class="btn btn-danger w-100 py-2 mt-3" type="submit">Change</button>
+    </div>
+  </form>
+</div>
+<script src="{{url_for('static', filename='scripts/image_preview.js')}}"></script>
+{% endblock %}
